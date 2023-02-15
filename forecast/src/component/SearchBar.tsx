@@ -1,8 +1,11 @@
-import React, { Pressable, StyleSheet } from 'react-native'
+import React, {useState} from "react"
+import{ Pressable, StyleSheet } from 'react-native'
 import {View,TextInput,} from "react-native";
-import {Search} from "../../assets/img/index"
+import {Search} from "../../assets/icons/index"
 
-function SearchBar({onPress,value,setValue}:any){
+function SearchBar({onPress,value,setValue}:any ){
+
+    
 
    return(
         <View style={Styles.rootContainer}>
@@ -24,16 +27,16 @@ export default SearchBar
 const Styles = StyleSheet.create({
       
     rootContainer:{
-        height:140,
-        width:300,
-        marginTop:100,
+        height:110,
+        width:320,
+        marginTop:40,
         backgroundColor:"white",
-        opecity:0.6,
         borderWidth:1,
         borderRadius:7,
         flexDirection:"row",
         alignItems:"center",
         justifyContent:"center",
+        opacity:0.8
     },
     inputBar:{
         width:180,

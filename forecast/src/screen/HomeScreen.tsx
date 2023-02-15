@@ -1,85 +1,168 @@
-import React,{useState,useEffect} from 'react'
-import {View,Text,ActivityIndicator,StyleSheet, ImageBackground} from 'react-native'
-import SearchBar from "../component/SearchBar"
-import axios from "axios"
+import React, { useState, useEffect } from 'react'
+import { View, Text, StyleSheet, ImageBackground, TextInput, Pressable } from 'react-native'
+
+import { Search } from "../../assets/icons/index"
+import { Location } from "../../assets/icons/index"
+import { Sun } from "../../assets/icons/index"
+import {Eye} from "../../assets/icons/index"
+import {Windy} from "../../assets/icons/index"
+import {Water} from "../../assets/icons/index"
+import {Min} from "../../assets/icons/index"
+import {Max} from "../../assets/icons/index"
+
+function HomeScreen({ weatherdata, value, setValue, onPress }: any) {
 
 
-const API_KEY = "bcafe9980585d4849aa3122b7917003b"
+  const [bgImg, setBgImg] = useState(null)
 
-function HomeScreen(){
-    
-    const [weather, setWeather] = useState<any>()
-    const [loaded, setLoaded] = useState(true)
-    const [bgImg, setBgImg] = useState()
 
-   useEffect(() => {
-        setLoaded(false)
-       axios 
-           .get(`https://api.openweathermap.org/data/2.5/weather?q=Mumbai&appid=${API_KEY}`)
-           .then((res:any) => {
-              setWeather(res.data)
-              console.log(res.data);
-              setLoaded(true);
-           }).catch((error:any) => {
-              console.log(error)
-           })
-   },[ ])
+  // destructuring 
+
+  const { weather } = weatherdata;
+  const [{ main }] = weather;
 
 
 
-    if(!loaded){
-        return(
-            <View style={Styles.loadingIcon}>
-                <ActivityIndicator size={45} color="Blue"/>
-            </View>
-        )
-    } 
+  // conversion kelvin to celsius
+  const Celsius = weatherdata.main.temp - 272.15
+  const celsius = Celsius.toFixed(2);
+  
+  const Min_Temp = weatherdata.main.temp_min - 272.15
+  const Min_temp = Min_Temp.toFixed(2);
 
-        const Temp = weather.main.temp
-        let celcius = (Temp - 273.15).toFixed(2)
+  const Max_Temp = weatherdata.main.temp_max - 272.15 
+  const Max_temp = Max_Temp.toFixed(2);
 
-    
 
-   return(
-         <ImageBackground style={Styles.bgImg} source={require("../../assets/img/bg.jpg")}>
-            <View style={Styles.rootContainer}>
-             <Text style={Styles.text}>{weather.name}</Text> 
-              <Text style={Styles.tempText}>{celcius} °C</Text>
-            </View>
-         </ImageBackground>
+
+
+
+  return (
+    <ImageBackground style={Styles.bgImg} source={require("../../assets/img/Fishing.png")}>
+      <View style={Styles.searchContainer}>
+
+
+
+
+        <View style={Styles.inputContainer}>
+          <TextInput style={Styles.inputBar} value={value} onChangeText={setValue} />
+
+          <Pressable onPress={onPress}>
+            <Search height={35} width={35} />
+          </Pressable>
+        </View>
+
+        <View style={Styles.cityName}>
+          <Location height={48} width={48} />
+          <Text style={Styles.text}>{weatherdata.name}</Text>
+        </View>
+
+
+
+        <View style={{ flexDirection: "row" }}>
+          <View style={{marginRight:50}}>
+            <Sun height={80} width={80} />
+            <Text style={Styles.text}>{main}</Text>
+          </View>
+             <Text style={Styles.tempText}>{celsius} °</Text>
+         </View>
+
+      <View style={Styles.DetailContainer}>
+      <View style={Styles.Detail}>
+           <Eye height={30} width={30}/>
+          <Text  style={Styles.text}> Visibility: <Text style={Styles.text_two}>{weatherdata.visibility}</Text></Text>
+        </View>
+        
+        <View style={Styles.Detail}>
+          <Windy height={30} width={30}/>
+          <Text  style={Styles.text}> Wind Speed: <Text style={Styles.text_two}>{weatherdata.wind.speed}km/hr</Text></Text>
+        </View>
+        
+        <View style={Styles.Detail}>
+          <Water height={30} width={30}/>
+          <Text  style={Styles.text}> Humidity: <Text style={Styles.text_two}>{weatherdata.main.humidity}</Text></Text>
+        </View>
+
+         <View style={Styles.Detail}>
+          <Min height={30} width={30}/>
+          <Text  style={Styles.text}> Min.Temp: <Text style={Styles.text_two}>{Min_temp} °</Text> </Text>
+          </View>
+
+           <View style={Styles.Detail}>
+            <Max height={30} width={30}/>
+             <Text  style={Styles.text}> Max.Temp: <Text style={Styles.text_two}>{Max_temp} °</Text></Text>
+            </View>  
+      </View>
        
-   )
+      </View>
+    </ImageBackground>
+  )
 
-} 
+}
 
 export default HomeScreen;
 
 
 const Styles = StyleSheet.create({
-     
-    rootContainer:{
-        flex:1,
-        marginTop:30,
-        margin:10,
-    },
-    text:{
-        fontSize:35,
-        color:"white",
-    },
-    tempText:{
-      fontSize:23,
-      color:"white",
-      fontFamily:"OpenSans-Bold"
-    },
-    bgImg:{
-        height:"100%",
-        width:"100%",
-        resizeMode:"cover",
-    },
+  inputContainer: {
+    flexDirection: "row",
+    marginTop: 60,
+  },
+  inputBar: {
+    borderBottomWidth: 1,
+    width: "70%",
+    fontSize: 22,
+  },
+  searchContainer: {
+    alignItems: "center",
+  },
+  rootContainer: {
+    flexDirection: "row",
+  },
+  cityName: {
+    flexDirection: "row",
+    alignItems:"center",
 
-    loadingIcon:{
-        position:"absolute",
-        right:19,
-        top:4,
-    }
+  },
+  textContainer: {
+    marginTop: 10,
+    marginLeft: 80,
+  },
+  text: {
+    fontSize: 17,
+    fontFamily: "Montserrat-Light",
+    color: "white",
+  },
+   text_two:{
+      fontSize:22
+   },
+  tempText: {
+    fontSize: 65,
+    color: "white",
+    fontWeight: "500",
+    fontFamily: "Montserrat-Medium"
+  },
+  bgImg: {
+    height: "100%",
+    width: "100%",
+    resizeMode: "cover",
+  },
+
+  loadingIcon: {
+    position: "absolute",
+    right: 19,
+    top: 4,
+  },
+  container: {
+    position:"relative",
+  },
+  Detail:{
+      flexDirection:"row",
+      marginLeft:17,
+      padding:10,
+  },
+  DetailContainer:{
+    marginTop:20,
+    width:"100%",  
+   }          
 })
