@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { View, Text, StyleSheet, ImageBackground, TextInput, Pressable } from 'react-native'
 
+// Icons
 import { Search } from "../../assets/icons/index"
 import { Location } from "../../assets/icons/index"
 import { Sun } from "../../assets/icons/index"
@@ -10,22 +11,45 @@ import {Water} from "../../assets/icons/index"
 import {Min} from "../../assets/icons/index"
 import {Max} from "../../assets/icons/index"
 
+
+const mist = require( "../../assets/img/Rainy.png") 
+const fishing = require("../../assets/img/Fishing.png")
+const cloudy = require("../../assets/img/Cloudy.png")
+
+
 function HomeScreen({ weatherdata, value, setValue, onPress }: any) {
 
 
-  const [bgImg, setBgImg] = useState(null)
+  const [bgImg, setBgImg] = useState<any>(fishing)
 
 
+  
   // destructuring 
-
+  
   const { weather } = weatherdata;
   const [{ main }] = weather;
-
-
-
+  
+  function weathercondition(condition:any){
+    if (condition === "Mist") {
+      setBgImg(mist)
+    } else if (condition === "Smoke") {
+      setBgImg(cloudy)
+    } else if (condition === "Haze") {
+      setBgImg(mist)
+    } else{
+      setBgImg(fishing)
+    } 
+    return;
+  }
+  
+  useEffect(() => {
+    weathercondition(main)
+  },[weatherdata])
+  
   // conversion kelvin to celsius
   const Celsius = weatherdata.main.temp - 272.15
   const celsius = Celsius.toFixed(2);
+
   
   const Min_Temp = weatherdata.main.temp_min - 272.15
   const Min_temp = Min_Temp.toFixed(2);
@@ -38,14 +62,14 @@ function HomeScreen({ weatherdata, value, setValue, onPress }: any) {
 
 
   return (
-    <ImageBackground style={Styles.bgImg} source={require("../../assets/img/Fishing.png")}>
+    <ImageBackground style={Styles.bgImg} source={bgImg}>
       <View style={Styles.searchContainer}>
 
 
 
 
         <View style={Styles.inputContainer}>
-          <TextInput style={Styles.inputBar} value={value} onChangeText={setValue} />
+          <TextInput style={Styles.inputBar} placeholder="Enter City Name" value={value} onChangeText={setValue} />
 
           <Pressable onPress={onPress}>
             <Search height={35} width={35} />
@@ -59,10 +83,10 @@ function HomeScreen({ weatherdata, value, setValue, onPress }: any) {
 
 
 
-        <View style={{ flexDirection: "row" }}>
-          <View style={{marginRight:50}}>
-            <Sun height={80} width={80} />
-            <Text style={Styles.text}>{main}</Text>
+        <View style={{ flexDirection: "row",justifyContent:"center" }}>
+          <View style={{marginRight:50}}> 
+            <Sun height={80} width={80}/>
+            <Text style={Styles.text_two}>{main}</Text>
           </View>
              <Text style={Styles.tempText}>{celsius} °</Text>
          </View>
@@ -75,12 +99,12 @@ function HomeScreen({ weatherdata, value, setValue, onPress }: any) {
         
         <View style={Styles.Detail}>
           <Windy height={30} width={30}/>
-          <Text  style={Styles.text}> Wind Speed: <Text style={Styles.text_two}>{weatherdata.wind.speed}km/hr</Text></Text>
+          <Text  style={Styles.text}> Wind Speed: <Text style={Styles.text_two}>{weatherdata.wind.speed} km/hr</Text></Text>
         </View>
         
         <View style={Styles.Detail}>
           <Water height={30} width={30}/>
-          <Text  style={Styles.text}> Humidity: <Text style={Styles.text_two}>{weatherdata.main.humidity}</Text></Text>
+          <Text  style={Styles.text}> Humidity: <Text style={Styles.text_two}>{weatherdata.main.humidity} %</Text></Text>
         </View>
 
          <View style={Styles.Detail}>
@@ -122,6 +146,7 @@ const Styles = StyleSheet.create({
   cityName: {
     flexDirection: "row",
     alignItems:"center",
+    marginLeft:120,
 
   },
   textContainer: {
@@ -130,11 +155,12 @@ const Styles = StyleSheet.create({
   },
   text: {
     fontSize: 17,
-    fontFamily: "Montserrat-Light",
+    fontFamily: "Montserrat-SemiBold",
     color: "white",
   },
    text_two:{
-      fontSize:22
+      fontSize:24,
+      color:"white",
    },
   tempText: {
     fontSize: 65,
@@ -146,6 +172,7 @@ const Styles = StyleSheet.create({
     height: "100%",
     width: "100%",
     resizeMode: "cover",
+    opacity:0.9
   },
 
   loadingIcon: {
@@ -162,7 +189,7 @@ const Styles = StyleSheet.create({
       padding:10,
   },
   DetailContainer:{
-    marginTop:20,
+    marginTop:70,
     width:"100%",  
    }          
 })
