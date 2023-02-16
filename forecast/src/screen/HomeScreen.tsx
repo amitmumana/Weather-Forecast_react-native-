@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { View, Text, StyleSheet, ImageBackground, TextInput, Pressable,Image } from 'react-native'
+import { weathertype } from '../../App'
 
 // Icons
 import { Search } from "../../assets/icons/index"
@@ -23,11 +24,22 @@ const coludy_two = require("../../assets/Wimg/cloudy_two.png")
 const  sun = require("../../assets/Wimg/sun.png")
 const windy = require("../../assets/Wimg/windy.png")
 
-function HomeScreen({ weatherdata, value, setValue, onPress }: any) {
 
 
-  const [bgImg, setBgImg] = useState<any>(fishing)
-  const [weatherIcon, setWeathericon] = useState<any>(sun)
+
+interface props {
+  weatherdata: weathertype,
+  value:string,
+  setValue:(e:any)=> void,
+  onPress:( ) => void,
+}
+
+
+function HomeScreen({ weatherdata, value, setValue, onPress }:props) {
+
+
+  const [bgImg, setBgImg] = useState(fishing)
+  const [weatherIcon, setWeathericon] = useState(sun)
 
   
   // destructuring 
@@ -69,18 +81,15 @@ function HomeScreen({ weatherdata, value, setValue, onPress }: any) {
 
   return (
     <ImageBackground style={Styles.bgImg} source={bgImg}>
-      <View style={Styles.searchContainer}>
 
-
-
-
+      <View style={Styles.searchContainer}>  
         <View style={Styles.inputContainer}>
           <TextInput style={Styles.inputBar} placeholder="Enter City Name" value={value} onChangeText={setValue} />
 
           <Pressable onPress={onPress}>
             <Search height={35} width={35} />
           </Pressable>
-        </View>
+      </View>
 
         <View style={Styles.cityName}>
           <Location height={48} width={48} />
@@ -90,11 +99,11 @@ function HomeScreen({ weatherdata, value, setValue, onPress }: any) {
 
 
         <View style={{ flexDirection: "row",justifyContent:"center" }}>
-          <View style={{marginRight:50}}> 
-          <Image source={weatherIcon} style={Styles.weatherImg}/>
-            <Text style={Styles.text_two}>{main}</Text>
-          </View>
-             <Text style={Styles.tempText}>{celsius} °</Text>
+           <View style={{marginRight:50}}> 
+             <Image source={weatherIcon} style={Styles.weatherImg}/>
+             <Text style={Styles.text_two}>{main}</Text>
+           </View>
+              <Text style={Styles.tempText}>{celsius} °</Text>
          </View>
 
       <View style={Styles.DetailContainer}>
@@ -182,15 +191,6 @@ const Styles = StyleSheet.create({
     width: "100%",
     resizeMode: "cover",
     opacity:0.9
-  },
-
-  loadingIcon: {
-    position: "absolute",
-    right: 19,
-    top: 4,
-  },
-  container: {
-    position:"relative",
   },
   Detail:{
       flexDirection:"row",

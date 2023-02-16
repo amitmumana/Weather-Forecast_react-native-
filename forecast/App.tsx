@@ -3,13 +3,26 @@ import {View,StyleSheet, StatusBar,Text,ActivityIndicator} from 'react-native'
 import axios from "axios"
 import HomeScreen from "./src/screen/HomeScreen"
 
+export interface weathertype {
+  main: any,
+  temp: number,
+  temp_min: number,
+  temp_max: number,
+  name:string
+  speed:number,
+  humidity: number,
+  weather: any[],
+  visibility: number,
+  wind:any,
+}
+
 const API_KEY = "d5f0b29e12f53a5183058f06c7f90e18"
 
 function App(){
 
   const [city,setCity] = useState("")
   const [cityData, setCityData] = useState("Delhi")
-  const [weatherData, setWeather] = useState<any>()
+  const [weatherData, setWeather] = useState<weathertype>()
   
 
 
@@ -34,7 +47,7 @@ function App(){
        <StatusBar translucent={true} backgroundColor="transparent" />
 
        <View style={Styles.rootContainer}>
-          {weatherData ?   <HomeScreen weatherdata={weatherData} value={city} setValue={(e:any)=> setCity(e)} onPress={onPress}/>
+          {weatherData ?   <HomeScreen weatherdata={weatherData} value={city} setValue={(e)=> setCity(e)} onPress={onPress}/>
            : <View style={Styles.loading}>
               <ActivityIndicator size={40} color="#0000ff" />
               <Text style={Styles.loadingFont}>Loading</Text>
