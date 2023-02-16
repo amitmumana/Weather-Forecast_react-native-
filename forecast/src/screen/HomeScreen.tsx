@@ -1,27 +1,33 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, StyleSheet, ImageBackground, TextInput, Pressable } from 'react-native'
+import { View, Text, StyleSheet, ImageBackground, TextInput, Pressable,Image } from 'react-native'
 
 // Icons
 import { Search } from "../../assets/icons/index"
 import { Location } from "../../assets/icons/index"
-import { Sun } from "../../assets/icons/index"
 import {Eye} from "../../assets/icons/index"
 import {Windy} from "../../assets/icons/index"
 import {Water} from "../../assets/icons/index"
 import {Min} from "../../assets/icons/index"
 import {Max} from "../../assets/icons/index"
 
-
+// BgIMG
 const mist = require( "../../assets/img/Rainy.png") 
 const fishing = require("../../assets/img/Fishing.png")
 const cloudy = require("../../assets/img/Cloudy.png")
 
+//Weather Icons
+const colud = require("../../assets/Wimg/cloud.png")
+const Cloudy = require("../../assets/Wimg/cloudy.png")
+const cloudy_one = require("../../assets/Wimg/cloudy_one.png")
+const coludy_two = require("../../assets/Wimg/cloudy_two.png")
+const  sun = require("../../assets/Wimg/sun.png")
+const windy = require("../../assets/Wimg/windy.png")
 
 function HomeScreen({ weatherdata, value, setValue, onPress }: any) {
 
 
   const [bgImg, setBgImg] = useState<any>(fishing)
-
+  const [weatherIcon, setWeathericon] = useState<any>(sun)
 
   
   // destructuring 
@@ -31,13 +37,13 @@ function HomeScreen({ weatherdata, value, setValue, onPress }: any) {
   
   function weathercondition(condition:any){
     if (condition === "Mist") {
-      setBgImg(mist)
+      setBgImg(mist), setWeathericon(cloudy)
     } else if (condition === "Smoke") {
-      setBgImg(cloudy)
+      setBgImg(cloudy), setWeathericon(coludy_two)
     } else if (condition === "Haze") {
-      setBgImg(mist)
+      setBgImg(mist), setWeathericon(windy)
     } else{
-      setBgImg(fishing)
+      setBgImg(fishing), setWeathericon(sun)
     } 
     return;
   }
@@ -85,7 +91,7 @@ function HomeScreen({ weatherdata, value, setValue, onPress }: any) {
 
         <View style={{ flexDirection: "row",justifyContent:"center" }}>
           <View style={{marginRight:50}}> 
-            <Sun height={80} width={80}/>
+          <Image source={weatherIcon} style={Styles.weatherImg}/>
             <Text style={Styles.text_two}>{main}</Text>
           </View>
              <Text style={Styles.tempText}>{celsius} °</Text>
@@ -147,7 +153,10 @@ const Styles = StyleSheet.create({
     flexDirection: "row",
     alignItems:"center",
     marginLeft:120,
-
+  },
+  weatherImg:{
+       height:60,
+       width:60,
   },
   textContainer: {
     marginTop: 10,

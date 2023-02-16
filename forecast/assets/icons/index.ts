@@ -4,8 +4,7 @@ export { Search };
 import Location from "./location.svg"
 export{Location};
 
-import Sun from "./sun.svg"
-export {Sun};
+
 
 import Eye from "./eye.svg"
 export {Eye};
@@ -21,3 +20,21 @@ export{Min}
 
 import Max from "./max.svg"
 export{Max}
+
+/// main ///
+
+import Sun from "./sun.svg"
+export {Sun};
+
+import Cloud from './cloud.svg'
+export { Cloud };
+
+import Rain from './rain.svg'
+export { Rain };
+
+import Sunny from "./sunny.svg"
+export{Sunny}
+
+import Wind from './wind.svg'
+export { Wind };
+

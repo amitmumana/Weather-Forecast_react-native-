@@ -27,7 +27,7 @@ function App(){
      setCityData(city)
    }
   
-  
+    
 
   return(
     <>  
